@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LCU Awards – Official Host Edition</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #050515;
+      --bg-card: #111224;
+      --accent: #ffcc33;
+      --accent-soft: rgba(255, 204, 51, 0.12);
+      --text: #f5f5f7;
+      --muted: #a0a0b5;
+      --error: #ff4d4d;
+      --border: #262740;
+      --radius: 16px;
+      --shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: radial-gradient(circle at top, #191932 0, #03030a 55%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 24px 12px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      background: linear-gradient(145deg, #111224 0, #050515 100%);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 24px 22px 26px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (min-width: 768px) {
+      .container {
+        padding: 32px 32px 34px;
+      }
+    }
+
+    .glow-orb {
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(40px);
+      opacity: 0.4;
+      z-index: -1;
+    }
+    .glow-orb.one {
+      width: 280px;
+      height: 280px;
+      background: radial-gradient(circle, #ffcc33, transparent 60%);
+      top: -120px;
+      right: -80px;
+    }
+    .glow-orb.two {
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, #7f5bff, transparent 60%);
+      bottom: -80px;
+      left: -40px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: clamp(1.6rem, 3vw, 2rem);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    header h1 span.emoji {
+      font-size: 1.4em;
+      filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.5));
+    }
+
+    header .subtitle {
+      margin-top: 8px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    header .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(0, 0, 0, 0.4);
+      color: var(--muted);
+    }
+
+    header .pill .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+    }
+
+    .info-banner {
+      border-radius: var(--radius);
+      padding: 10px 12px;
+      background: radial-gradient(circle at left, var(--accent-soft), transparent);
+      border: 1px solid rgba(255, 204, 51, 0.22);
+      margin-bottom: 18px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .info-icon {
+      font-size: 1.1rem;
+      margin-top: 1px;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 900px) {
+      .category-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .category-card {
+      background: rgba(7, 7, 24, 0.98);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 14px 14px 16px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.16s ease, box-shadow 0.16s ease,
+        border-color 0.16s ease, background 0.16s ease;
+    }
+
+    .category-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
+      border-color: rgba(255, 204, 51, 0.4);
+      background: radial-gradient(circle at top left, #18182f, #050515);
+    }
+
+    .category-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .category-title {
+      font-size: 0.96rem;
+      font-weight: 600;
+    }
+
+    .category-meta {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      white-space: nowrap;
+      opacity: 0.85;
+    }
+
+    .category-description {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .nominee {
+      margin-bottom: 6px;
+      padding: 6px 8px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      background: rgba(20, 20, 40, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.02);
+      transition: background 0.14s ease, border-color 0.14s ease,
+        transform 0.06s ease;
+    }
+
+    .nominee:hover {
+      background: rgba(255, 204, 51, 0.11);
+      border-color: rgba(255, 204, 51, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .nominee input[type="radio"] {
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      border: 2px solid var(--muted);
+      position: relative;
+      cursor: pointer;
+      flex-shrink: 0;
+      display: inline-block;
+    }
+
+    .nominee input[type="radio"]::before {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: 999px;
+      background: var(--accent);
+      opacity: 0;
+      transition: opacity 0.16s ease;
+    }
+
+    .nominee input[type="radio"]:checked {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(255, 204, 51, 0.22);
+    }
+
+    .nominee input[type="radio"]:checked::before {
+      opacity: 1;
+    }
+
+    .nominee-label {
+      font-size: 0.86rem;
+    }
+
+    .required-error {
+      margin-top: 6px;
+      font-size: 0.78rem;
+      color: var(--error);
+      display: none;
+    }
+
+    .category-card.missing .required-error {
+      display: block;
+    }
+
+    .category-card.missing {
+      border-color: rgba(255, 77, 77, 0.7);
+      box-shadow: 0 0 0 1px rgba(255, 77, 77, 0.6);
+    }
+
+    .category-card.missing .category-title {
+      color: #ffb3b3;
+    }
+
+    .form-footer {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    @media (min-width: 600px) {
+      .form-footer {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    .left-footer {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .submit-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 24px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ffcc33, #ff9f1c);
+      color: #241300;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.6),
+        0 0 14px rgba(255, 204, 51, 0.8);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: center;
+      min-width: 210px;
+      transition: transform 0.1s ease, box-shadow 0.1s ease,
+        filter 0.1s ease, opacity 0.1s ease;
+    }
+
+    .submit-btn span.icon {
+      font-size: 1.1rem;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.75),
+        0 0 18px rgba(255, 204, 51, 0.9);
+      filter: brightness(1.05);
+    }
+
+    .submit-btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+    }
+
+    .submit-btn[disabled] {
+      opacity: 0.6;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .global-error {
+      margin-top: 6px;
+      font-size: 0.78rem;
+      color: var(--error);
+      display: none;
+    }
+
+    .vote-complete {
+      text-align: center;
+      margin-top: 16px;
+      border-radius: var(--radius);
+      padding: 16px 18px 18px;
+      background: radial-gradient(circle at top, var(--accent-soft), #050515);
+      border: 1px solid rgba(255, 204, 51, 0.4);
+      animation: popIn 0.35s ease;
+    }
+
+    .vote-complete h2 {
+      margin: 0 0 10px;
+      font-size: 1.1rem;
+    }
+
+    .vote-complete p {
+      margin: 0;
+      font-size: 0.86rem;
+      color: var(--muted);
+    }
+
+    .vote-summary {
+      margin-top: 12px;
+      text-align: left;
+      font-size: 0.84rem;
+      max-height: 260px;
+      overflow: auto;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .vote-summary-item {
+      margin-bottom: 6px;
+    }
+
+    .vote-summary-item strong {
+      color: var(--accent);
+    }
+
+    @keyframes popIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .already-voted {
+      margin-top: 16px;
+      font-size: 0.85rem;
+      color: var(--accent);
+      text-align: center;
+    }
+
+    .small-muted {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* Admin panel */
+    
+    .admin-locked {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .admin-locked span {
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .admin-toggle {
+      margin-top: 20px;
+      text-align: right;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .admin-toggle button {
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.5);
+      color: var(--muted);
+      padding: 6px 10px;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+
+    .admin-panel {
+      margin-top: 12px;
+      border-radius: var(--radius);
+      padding: 12px 14px 16px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px dashed rgba(255, 255, 255, 0.2);
+      font-size: 0.82rem;
+      display: none;
+    }
+
+    .admin-panel-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .admin-panel-title {
+      font-weight: 600;
+    }
+
+    .admin-panel-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .admin-panel-actions button {
+      border-radius: 999px;
+      border: none;
+      padding: 6px 12px;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+
+    .admin-btn-primary {
+      background: var(--accent);
+      color: #241300;
+    }
+
+    .admin-btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--muted);
+    }
+
+    .admin-status {
+      margin-bottom: 6px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .admin-table-wrapper {
+      max-height: 260px;
+      overflow: auto;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+    }
+
+    table thead {
+      background: rgba(255, 255, 255, 0.04);
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    th, td {
+      padding: 6px 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      text-align: left;
+    }
+
+    th {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    tbody tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    footer {
+      margin-top: 16px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="glow-orb one"></div>
+  <div class="glow-orb two"></div>
+
+  <header>
+    <h1>
+      <span class="emoji">🏆</span>
+      <span>LCU Awards Show</span>
+    </h1>
+    <div class="subtitle">Official Host Edition • Fan Voting Ballot</div>
+    <div class="pill">
+      <span class="dot"></span>
+      LIVE FAN VOTING · 15 CATEGORIES
+    </div>
+  </header>
+
+  <div class="info-banner">
+    <div class="info-icon">ℹ️</div>
+    <div>
+      <strong>How it works:</strong> Pick <strong>one nominee per category</strong> and hit
+      <strong>Submit Your Votes</strong>. Votes are sent to your backend for tallying,
+      and you can review/export them in the admin panel below.
+    </div>
+  </div>
+
+  <form id="awards-form" novalidate>
+    <div id="category-grid" class="category-grid"></div>
+
+    <div class="form-footer">
+      <div class="left-footer">
+        All categories are required. Choose carefully, there are no take-backs in the LCU. 💀
+        <div class="small-muted">
+          (Frontend still uses local storage to prevent re-voting from the same browser.)
+        </div>
+      </div>
+      <div>
+        <button type="submit" class="submit-btn" id="submit-btn">
+          <span class="icon">🎫</span>
+          <span>Submit Your Votes</span>
+        </button>
+        <div class="global-error" id="global-error">
+          Please fill out all categories before submitting.
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div id="vote-complete-container"></div>
+  <div id="already-voted" class="already-voted" style="display:none;"></div>
+
+  <!-- Admin toggle + panel -->
+  <div class="admin-toggle">
+    Admin / Export:
+    <button type="button" id="admin-toggle-btn">Show Panel</button>
+  </div>
+
+  <div class="admin-panel" id="admin-panel">
+    <div class="admin-locked" id="admin-locked-msg">Panel is <span>locked</span>. Click “Show Panel” above and enter the passphrase to unlock.
+    </div>
+    <div class="admin-panel-header">
+      <div class="admin-panel-title">Admin Panel – Ballots Overview</div>
+      <div class="admin-panel-actions">
+        <button type="button" class="admin-btn-primary" id="admin-load-btn">Load Ballots</button>
+        <button type="button" class="admin-btn-secondary" id="admin-export-btn">Download CSV</button>
+      </div>
+    </div>
+    <div class="admin-status" id="admin-status">No ballots loaded yet.</div>
+    <div class="admin-table-wrapper">
+      <table id="admin-table">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Timestamp</th>
+          <th>Category</th>
+          <th>Selection</th>
+        </tr>
+        </thead>
+        <tbody id="admin-tbody">
+        <!-- Filled dynamically -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer>
+    LCU Awards – Fan ballot prototype. Frontend + simple backend demo. Protect admin routes on your server.
+  </footer>
+</div>
+
+<script>
+  // ============================================================
+  // 0) BACKEND CONFIG – UPDATE URLS TO MATCH YOUR SERVER
+  // ============================================================
+ const BACKEND_CONFIG = {
+  submitUrl: "https://lcu.jelly-chef.com/api/ballots",
+  adminListUrl: "https://lcu.jelly-chef.com/api/ballots"
+};
+
+// Simple front-end admin gate (UI-only, NOT a replacement for real backend auth)
+const ADMIN_PANEL_CONFIG = {
+  enabled: true,
+  // Change this to whatever passphrase you want for the front-end panel:
+  passphrase: "H*NLusWdr8eRAF@U"
+};
+
+
+
+  // ============================================================
+  // 1) EASY-TO-EDIT DATA: CATEGORIES & NOMINEES
+  // ============================================================
+  const awardsData = [
+    {
+      id: "best-show",
+      title: "Best Show (Flagship Series Award)",
+      description: "",
+      nominees: [
+        "Lolcow Live",
+        "Lolcow Queens",
+        "Lolcow Nuts",
+        "Lolcow Nerds",
+        "Lolcow Reapers",
+        "Lolcow Rewind",
+        "Lolcow Cafe",
+        "Lolcow Balls",
+        "Lolcow Cash",
+        "Lolcow Test",
+        "Lolcow Chubby",
+        "Lolcow Rain",
+        "Lolcow Alpha",
+        "Lolcow Crypt",
+        "Lolcow Aussy",
+        "Lolcow Babe",
+        "Lolcow Wild",
+        "Lolcow Rebel",
+        "Lolcow Bus",
+        "Lolcow Pit"
+      ]
+    },
+    {
+      id: "best-host",
+      title: "Best Host / Personality of the Year",
+      description: "",
+      nominees: [
+        "A-Mac",
+        "Albert",
+        "Angie",
+        "Bat Gorl",
+        "Billy The Fridge",
+        "Boogie",
+        "Booster",
+        "Breadstik",
+        "Buff",
+        "Cat Lady",
+        "Denmark",
+        "Gidgy",
+        "Grimm",
+        "Josh",
+        "KBAC",
+        "Keem",
+        "Ken",
+        "Kimmi",
+        "Knightmare",
+        "Licibops",
+        "Lilah",
+        "Lucifina",
+        "LunaFae",
+        "Rastov",
+        "Savage",
+        "Scooter",
+        "Smooch",
+        "Stake",
+        "Sweet Tea",
+        "Tech Protect",
+        "TinaD",
+        "Tommy C",
+        "Twiggy",
+        "WonderWomen",
+        "Xylie",
+        "YoMama",
+        "Zeyzooted"
+      ]
+    },
+    {
+      id: "best-wrangler",
+      title: "Best Wrangler (Chaos Handler Award)",
+      description: "",
+      nominees: [
+        "Savage",
+        "Rastov",
+        "Zeyzooted",
+        "YoMama",
+        "Xylie",
+        "Scooter"
+      ]
+    },
+    {
+      id: "best-lolcow",
+      title: "Best Lolcow (Most Entertaining Trainwreck Award)",
+      description: "",
+      nominees: [
+        "Boogie",
+        "Keem",
+        "TinaD",
+        "Sweet Tea",
+        "Booster"
+      ]
+    },
+    {
+      id: "breakout-star",
+      title: "Breakout Star of the Year",
+      description: "Newcomers or hosts who saw major growth and highlights.",
+      nominees: [
+        "Lunafae",
+        "Denmark",
+        "Booster",
+        "Sweet Tea"
+      ]
+    },
+    {
+      id: "best-duo",
+      title: "Best Duo / Tag Team",
+      description: "",
+      nominees: [
+        "A-Mac & Angie",
+        "Josh & Xylie",
+        "Grimm & Knightmare",
+        "Buff & Zeyzooted",
+        "Sweet Tea & Phantom"
+      ]
+    },
+    {
+      id: "best-trio",
+      title: "Best Trio",
+      description: "",
+      nominees: [
+        "Keem, Boogie, & Wings",
+        "Cat Lady, Gidgy, & Lilah",
+        "WonderWomen, Lucifina, & Ultra",
+        "Sweet Tea, Scooter, & Rastov"
+      ]
+    },
+    {
+      id: "best-episode",
+      title: "Best Episode / Stream of the Year",
+      description: "",
+      nominees: [
+        "Live - Fat Camp - Day 6 - TTS 🤑 Truth or Dare❗ 😂",
+        "Queens - Gidgy Has Been FIRED ❌ SAVAGE Joins Tina! 🏴‍☠️😳",
+        "Rewind - Billy and Xylie FINALLY MEET! 😱😱😱 WHO WILL WIN?! 💪💪",
+        "Balls - A Brand Spanking New Show🤜💥🤛The LCU Has Competition!💪😎"
+      ]
+    },
+    {
+      id: "best-feud",
+      title: "Best Feud / Rivalry",
+      description: "",
+      nominees: [
+        "Tommy C vs Billy",
+        "TinaD vs Becky",
+        "NDF vs Everyone",
+        "Keem vs Knightmare"
+      ]
+    },
+    {
+      id: "funniest-moment",
+      title: "Funniest Moment of the Year",
+      description: "",
+      nominees: [
+        "Sweet Tea sees God in Rastov Thighs",
+        "Keem Trolls Becky and the BBU",
+        "Fat Camp Quiet Game - Shut up pussay",
+        "TinaD kicks Boogie square in the Nuts",
+        "Eat the Mud Glammy"
+      ]
+    },
+    {
+      id: "best-production",
+      title: "Best Production / Visual Design",
+      description: "",
+      nominees: [
+        "Test",
+        "Alpha",
+        "Rewind",
+        "Live"
+      ]
+    },
+    {
+      id: "best-meme",
+      title: "Best Community Meme / Running Joke",
+      description: "",
+      nominees: [
+        "Albert - Mustard",
+        "Rastov - He Jerks it",
+        "Xylie - Surrounded by Sluts",
+        "🪤🪤🪤"
+      ]
+    },
+    {
+      id: "best-transformation",
+      title: "Best Character Transformation (Glow-Up or Glow-Down)",
+      description: "",
+      nominees: [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      id: "best-event",
+      title: "Best Special Event",
+      description: "",
+      nominees: [
+        "Fat Camp",
+        "Keem Summer Camp",
+        "A Lolcow Thanksgiving",
+        "The Firing of Becky Live"
+      ]
+    },
+    {
+      id: "best-caller",
+      title: "Best Caller Moment (Audience Chaos Award)",
+      description: "",
+      nominees: [
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+  ];
+
+  // ============================================================
+  // 2) RENDER FUNCTION – BUILDS THE FORM
+  // ============================================================
+  const categoryGridEl = document.getElementById("category-grid");
+  const voteCompleteContainer = document.getElementById("vote-complete-container");
+  const alreadyVotedEl = document.getElementById("already-voted");
+  const formEl = document.getElementById("awards-form");
+  const globalErrorEl = document.getElementById("global-error");
+  const submitBtn = document.getElementById("submit-btn");
+
+  const adminToggleBtn = document.getElementById("admin-toggle-btn");
+  const adminPanel = document.getElementById("admin-panel");
+  const adminLoadBtn = document.getElementById("admin-load-btn");
+  const adminExportBtn = document.getElementById("admin-export-btn");
+  const adminStatusEl = document.getElementById("admin-status");
+  const adminTbody = document.getElementById("admin-tbody");
+
+  // Tracks whether the admin panel has been unlocked in this browser session
+  let adminUnlocked = false;
+  const adminLockedMsg = document.getElementById("admin-locked-msg");
+
+
+  function renderCategories() {
+    categoryGridEl.innerHTML = "";
+
+    awardsData.forEach((category, index) => {
+      const card = document.createElement("section");
+      card.className = "category-card";
+      card.dataset.categoryId = category.id;
+
+      const header = document.createElement("div");
+      header.className = "category-header";
+
+      const title = document.createElement("div");
+      title.className = "category-title";
+      title.textContent = `${index + 1}. ${category.title}`;
+
+      const meta = document.createElement("div");
+      meta.className = "category-meta";
+      meta.textContent = "Vote for one";
+
+      header.appendChild(title);
+      header.appendChild(meta);
+      card.appendChild(header);
+
+      if (category.description) {
+        const desc = document.createElement("div");
+        desc.className = "category-description";
+        desc.textContent = category.description;
+        card.appendChild(desc);
+      }
+
+      category.nominees.forEach((nominee, nomineeIndex) => {
+        const nomineeId = `${category.id}-${nomineeIndex}`;
+        const label = document.createElement("label");
+        label.className = "nominee";
+        label.setAttribute("for", nomineeId);
+
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = category.id;
+        input.value = nominee;
+        input.id = nomineeId;
+
+        const span = document.createElement("span");
+        span.className = "nominee-label";
+        span.textContent = nominee;
+
+        label.appendChild(input);
+        label.appendChild(span);
+        card.appendChild(label);
+      });
+
+      const error = document.createElement("div");
+      error.className = "required-error";
+      error.textContent = "You must select a nominee in this category.";
+      card.appendChild(error);
+
+      categoryGridEl.appendChild(card);
+    });
+  }
+
+  renderCategories();
+
+  // ============================================================
+  // 3) LOCAL STORAGE HELPERS (SAME-BROWSER RE-VOTE BLOCK)
+  // ============================================================
+  const STORAGE_KEY = "lcuAwardsHostEditionVote";
+
+  function hasExistingVote() {
+    try {
+      return Boolean(localStorage.getItem(STORAGE_KEY));
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function saveVoteLocally(vote) {
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          vote,
+          timestamp: new Date().toISOString()
+        })
+      );
+    } catch (e) {}
+  }
+
+  function getExistingVote() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ============================================================
+  // 4) VALIDATION & SUBMISSION
+  // ============================================================
+  function validateForm() {
+    let valid = true;
+    globalErrorEl.style.display = "none";
+
+    awardsData.forEach(category => {
+      const card = categoryGridEl.querySelector(
+        `.category-card[data-category-id="${category.id}"]`
+      );
+      if (!card) return;
+      card.classList.remove("missing");
+
+      const selected = formEl.querySelector(
+        `input[name="${category.id}"]:checked`
+      );
+
+      if (!selected) {
+        valid = false;
+        card.classList.add("missing");
+      }
+    });
+
+    if (!valid) {
+      globalErrorEl.style.display = "block";
+    }
+
+    return valid;
+  }
+
+  function collectVotes() {
+    const results = {};
+    awardsData.forEach(category => {
+      const selected = formEl.querySelector(
+        `input[name="${category.id}"]:checked`
+      );
+      if (selected) {
+        results[category.title] = selected.value;
+      }
+    });
+    return results;
+  }
+
+  function showVoteSummary(voteObj) {
+    voteCompleteContainer.innerHTML = "";
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "vote-complete";
+
+    const heading = document.createElement("h2");
+    heading.textContent = "✅ Votes Submitted – Thank You!";
+    wrapper.appendChild(heading);
+
+    const sub = document.createElement("p");
+    sub.textContent =
+      "Your ballot has been recorded. Below is a quick summary of your picks (for your records or screenshots).";
+    wrapper.appendChild(sub);
+
+    const summary = document.createElement("div");
+    summary.className = "vote-summary";
+
+    Object.entries(voteObj).forEach(([categoryTitle, nominee]) => {
+      const item = document.createElement("div");
+      item.className = "vote-summary-item";
+      item.innerHTML = `<strong>${categoryTitle}:</strong> ${nominee}`;
+      summary.appendChild(item);
+    });
+
+    wrapper.appendChild(summary);
+    voteCompleteContainer.appendChild(wrapper);
+  }
+
+  async function submitBallotToBackend(votes) {
+    const payload = {
+      votes,
+      submittedAt: new Date().toISOString()
+    };
+
+    const headers = {
+      "Content-Type": "application/json"
+    };
+
+    try {
+      const res = await fetch(BACKEND_CONFIG.submitUrl, {
+        method: "POST",
+        headers,
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) {
+        throw new Error(`Server responded with ${res.status}`);
+      }
+
+      return await res.json().catch(() => ({}));
+    } catch (err) {
+      console.error("Error submitting ballot", err);
+      throw err;
+    }
+  }
+
+  formEl.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    if (hasExistingVote()) {
+      const existing = getExistingVote();
+      alreadyVotedEl.style.display = "block";
+      alreadyVotedEl.textContent =
+        "You’ve already voted from this browser. Your previous ballot is shown below.";
+      if (existing && existing.vote) {
+        showVoteSummary(existing.vote);
+      }
+      submitBtn.disabled = true;
+      return;
+    }
+
+    const isValid = validateForm();
+    if (!isValid) {
+      return;
+    }
+
+    const votes = collectVotes();
+
+    submitBtn.disabled = true;
+    const originalLabel = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<span class="icon">⏳</span><span>Submitting…</span>';
+
+    try {
+      await submitBallotToBackend(votes);
+      saveVoteLocally(votes);
+      showVoteSummary(votes);
+      console.log("LCU Awards ballot submitted:", votes);
+    } catch (err) {
+      alert("There was an error submitting your vote to the server. Please try again.");
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalLabel;
+      return;
+    }
+
+    submitBtn.innerHTML = originalLabel;
+  });
+
+  // On load, show existing vote if present
+  window.addEventListener("DOMContentLoaded", () => {
+    if (hasExistingVote()) {
+      const existing = getExistingVote();
+      alreadyVotedEl.style.display = "block";
+      alreadyVotedEl.textContent =
+        "You’ve previously submitted a ballot from this browser. Your last recorded votes are shown below.";
+      if (existing && existing.vote) {
+        showVoteSummary(existing.vote);
+      }
+      submitBtn.disabled = true;
+    }
+  });
+
+  // ============================================================
+  // 5) ADMIN PANEL – LOAD & EXPORT BALLOTS
+  // ============================================================
+  let cachedBallots = [];
+
+  adminToggleBtn.addEventListener("click", () => {
+  // If front-end admin auth is enabled and not yet unlocked, ask for passphrase
+  if (ADMIN_PANEL_CONFIG.enabled && !adminUnlocked) {
+    const input = prompt("Enter admin passphrase to unlock the panel:");
+    if (input === null) {
+      return; // Cancelled
+    }
+    if (input !== ADMIN_PANEL_CONFIG.passphrase) {
+      alert("Incorrect passphrase. Panel remains locked.");
+      return;
+    }
+
+    // Successful unlock
+    adminUnlocked = true;
+
+    // FORCE BROWSER TO STORE BASIC AUTH by opening backend URL in a tiny hidden window
+    const w = window.open(BACKEND_CONFIG.adminListUrl, "_blank", "width=10,height=10");
+
+    // Close the window after 1 second
+    setTimeout(() => {
+      if (w) w.close();
+    }, 1000);
+
+    alert("Admin panel unlocked. Backend authentication initialized.");
+  }
+
+  const visible = adminPanel.style.display === "block";
+  adminPanel.style.display = visible ? "none" : "block";
+  adminToggleBtn.textContent = visible ? "Show Panel" : "Hide Panel";
+
+  // If panel becomes visible while locked, show the locked message
+  if (!adminUnlocked && adminPanel.style.display === "block") {
+    adminLockedMsg.style.display = "block";
+  }
+});
+
+
+  async function loadBallots() {
+  // Frontend admin lock check
+  if (ADMIN_PANEL_CONFIG.enabled && !adminUnlocked) {
+    alert("Admin panel is locked. Click 'Show Panel' and unlock it first.");
+    return;
+  }
+
+  adminStatusEl.textContent = "Loading ballots from server…";
+  adminTbody.innerHTML = "";
+
+  try {
+    const res = await fetch(BACKEND_CONFIG.adminListUrl, {
+      credentials: "include"
+    });
+
+    if (!res.ok) {
+      throw new Error(`Server responded with ${res.status}`);
+    }
+
+    const data = await res.json();
+
+    // Expecting an array of { id, submittedAt, votes }
+    cachedBallots = Array.isArray(data) ? data : [];
+
+    if (!cachedBallots.length) {
+      adminStatusEl.textContent = "No ballots found yet.";
+      return;
+    }
+
+    adminStatusEl.textContent = `Loaded ${cachedBallots.length} ballot(s).`;
+    renderAdminTable(cachedBallots);
+  } catch (err) {
+    console.error("Error loading ballots", err);
+    adminStatusEl.textContent =
+      "Error loading ballots from server. Check console / backend.";
+  }
+}
+
+  function renderAdminTable(ballots) {
+    adminTbody.innerHTML = "";
+    let rowIndex = 1;
+
+    ballots.forEach((ballot, ballotIndex) => {
+      const submittedAt = ballot.submittedAt || ballot.timestamp || "";
+
+      const votes = ballot.votes || {};
+      const entries = Object.entries(votes);
+
+      if (!entries.length) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${ballotIndex + 1}</td>
+          <td>${submittedAt}</td>
+          <td colspan="2"><em>No votes recorded</em></td>
+        `;
+        adminTbody.appendChild(tr);
+        rowIndex++;
+        return;
+      }
+
+      entries.forEach(([categoryTitle, nominee], idx) => {
+        const tr = document.createElement("tr");
+        if (idx === 0) {
+          tr.innerHTML = `
+            <td rowspan="${entries.length}">${ballotIndex + 1}</td>
+            <td rowspan="${entries.length}">${submittedAt}</td>
+            <td>${categoryTitle}</td>
+            <td>${nominee}</td>
+          `;
+        } else {
+          tr.innerHTML = `
+            <td>${categoryTitle}</td>
+            <td>${nominee}</td>
+          `;
+        }
+        adminTbody.appendChild(tr);
+        rowIndex++;
+      });
+    });
+  }
+
+  function exportBallotsToCSV(ballots) {
+    if (!ballots.length) {
+      alert("No ballots loaded yet. Click 'Load Ballots' first.");
+      return;
+    }
+
+    // Flatten ballots into rows: ballotIndex, submittedAt, category, vote
+    const rows = [
+      ["Ballot #", "Submitted At", "Category", "Selection"]
+    ];
+
+    ballots.forEach((ballot, i) => {
+      const submittedAt = ballot.submittedAt || ballot.timestamp || "";
+      const votes = ballot.votes || {};
+      const entries = Object.entries(votes);
+
+      if (!entries.length) {
+        rows.push([String(i + 1), submittedAt, "", ""]);
+        return;
+      }
+
+      entries.forEach(([categoryTitle, nominee]) => {
+        rows.push([String(i + 1), submittedAt, categoryTitle, nominee]);
+      });
+    });
+
+    const csvContent = rows
+      .map(row =>
+        row
+          .map(cell => {
+            const safe = String(cell ?? "");
+            if (safe.includes('"') || safe.includes(",") || safe.includes("\n")) {
+              return `"${safe.replace(/"/g, '""')}"`;
+            }
+            return safe;
+          })
+          .join(",")
+      )
+      .join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "lcu-awards-ballots.csv";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  adminLoadBtn.addEventListener("click", () => {
+    loadBallots();
+  });
+
+  adminExportBtn.addEventListener("click", () => {
+    exportBallotsToCSV(cachedBallots);
+  });
+</script>
+</body>
+</html>
